@@ -32,7 +32,7 @@ def find_toast(path: str):
     largest_contour = max(contours, key=cv2.contourArea)
 
     if (cv.contourArea(largest) < MINIMUM_AREA_FOR_TOAST):
-         cv2.waitKey(0)
+        cv2.waitKey(0)
         cv2.destroyAllWindows()
         return -1, -1
 
