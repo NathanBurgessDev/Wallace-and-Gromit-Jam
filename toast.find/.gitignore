@@ -1,3 +1,5 @@
 jamGunVenv
 *.jpeg
 *.jpg
+/__pycache__
+*.mp4
