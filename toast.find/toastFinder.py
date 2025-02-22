@@ -31,11 +31,10 @@ def find_toast(path: str):
     # Find the largest contour by area
     largest_contour = max(contours, key=cv2.contourArea)
 
-    if (cv.contourArea(largest) < MINIMUM_AREA_FOR_TOAST)
+    if (cv.contourArea(largest) < MINIMUM_AREA_FOR_TOAST):
          cv2.waitKey(0)
         cv2.destroyAllWindows()
         return -1, -1
-
 
     # Create a mask for the largest region
     mask = np.zeros_like(imgErode)
