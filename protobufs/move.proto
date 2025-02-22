@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+message MoveTo {
+    required int32 azimuth = 1;
+    required int32 altitude = 2;
+    optional int32 accelRate = 3;
+    optional int32 speedRate = 4;
+}
