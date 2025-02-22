@@ -4,7 +4,7 @@ import cv2
 MINIMUM_AREA_FOR_TOAST = 1000 # may need to adjust this for differnet cameras
 
 def find_toast(path: str):
-    src = cv2.imread('image1.jpeg')
+    src = cv2.imread(path)
     imgRGB = cv2.cvtColor(src, cv2.COLOR_BGR2RGB)
     imgHSV = cv2.cvtColor(imgRGB, cv2.COLOR_BGR2HSV)
 
