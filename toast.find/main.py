@@ -1,7 +1,9 @@
 from toastFinder import find_toast
-from camera import start_camera
+from camera import test_camera, watch_for_toast
+import cv2
 
-# start_camera()
+# test_camera()
+watch_for_toast()
 
-print(find_toast("IMG_4766.jpeg"))
+# print(find_toast("small3.jpeg"))
 

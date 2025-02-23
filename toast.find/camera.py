@@ -1,6 +1,42 @@
 import cv2
+from toastFinder import find_toast
 
-def start_camera():
+# watch for toast, and return two frames of toast positions to calculate
+def watch_for_toast():
+    # Open the default camera
+    cam = cv2.VideoCapture(0)
+
+    # Get the default frame width and height
+    frame_width = int(cam.get(cv2.CAP_PROP_FRAME_WIDTH))
+    frame_height = int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+    result = []
+
+    while True:
+        ret, frame = cam.read()
+        cv2.imshow('Camera', frame)
+        
+        toast = find_toast(frame)
+        if len(toast) > 2 and not len is None:
+            print("huh")
+            result.append(toast)
+
+            if len(result) >= 2:
+                return
+            
+        # Display the captured frame
+
+
+        # Press 'q' to exit the loop
+        if cv2.waitKey(1) == ord('q'):
+            break
+
+    # Release the capture and writer objects
+    cam.release()
+    out.release()
+    cv2.destroyAllWindows()
+    
+def test_camera():
     # Open the default camera
     cam = cv2.VideoCapture(0)
 

@@ -1,11 +1,15 @@
 import numpy as np
 import cv2
+import time
 
-MINIMUM_AREA_FOR_TOAST = 1000 # may need to adjust this for differnet cameras
+MINIMUM_AREA_FOR_TOAST = 100000 # may need to adjust this for differnet cameras
 
-def find_toast(path: str):
-    src = cv2.imread(path)
-    imgRGB = cv2.cvtColor(src, cv2.COLOR_BGR2RGB)
+def find_toast(image: str):
+    # print(type(image))
+    # image = cv2.imread(image)
+    hh, ww = image.shape[:2]
+    image = image - 15
+    imgRGB = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     imgHSV = cv2.cvtColor(imgRGB, cv2.COLOR_BGR2HSV)
 
     lower = np.array([20, 0, 0])
@@ -17,7 +21,7 @@ def find_toast(path: str):
     cv2.imshow("foreground", imgForeground)
 
     #kernels for morphology operations
-    kernel_noise = np.ones((3,3),np.uint8) #to delete small noises
+    kernel_noise = np.ones((6,6),np.uint8) #to delete small noises
     kernel_dilate = np.ones((30,30),np.uint8)  #bigger kernel to fill holes after ropes
     kernel_erode = np.ones((38,38),np.uint8)  #bigger kernel to delete pixels on edge that was add after dilate function
 
@@ -28,12 +32,16 @@ def find_toast(path: str):
 
     contours, _ = cv2.findContours(imgErode, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
+    if len(contours) == 0:
+        return
+
     # Find the largest contour by area
     largest_contour = max(contours, key=cv2.contourArea)
 
-    if (cv.contourArea(largest) < MINIMUM_AREA_FOR_TOAST):
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+    print(cv2.contourArea(largest_contour))
+    if (cv2.contourArea(largest_contour) < MINIMUM_AREA_FOR_TOAST):
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
         return -1, -1
 
     # Create a mask for the largest region
@@ -48,6 +56,6 @@ def find_toast(path: str):
     # Show result
     cv2.imshow("Largest Region", mask)
 
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    cv2.imwrite("OUTPUT.png", mask)
+
     return cX, cY, time.time()
