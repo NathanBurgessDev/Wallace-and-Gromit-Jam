@@ -1,0 +1,10 @@
+[project]
+name = "master"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "protobuf>=5.29.3",
+    "pyserial>=3.5",
+]

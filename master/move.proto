@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package arm.messages;
+
+message MoveTo {
+    int32 azimuth = 1;
+    int32 altitude = 2;
+    optional int32 accelRate = 3;
+    optional int32 speedRate = 4;
+}
