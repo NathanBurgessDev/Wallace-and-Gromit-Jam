@@ -1,5 +1,6 @@
 import cv2
 from toastFinder import find_toast
+from JamFiring import fireJam
 import time, os, glob
 
 # watch for toast, and return two frames of toast positions to calculate
@@ -25,6 +26,8 @@ def watch_for_toast():
         toast = find_toast(frame)
         if toast is not None and len(toast) > 2:
             print("i see toast")
+            fireJam()
+            #TODO: figure out where to shoot
         #     outputImages = [x[3] for x in result if x[2] >= time.time() - 0.5]
         #     inputImages = [x[4] for x in result if x[2] >= time.time() - 0.5]
             
