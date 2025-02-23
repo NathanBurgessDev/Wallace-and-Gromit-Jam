@@ -1,6 +1,6 @@
 import cv2
 from toastFinder import find_toast
-import time
+import time, os, glob
 
 # watch for toast, and return two frames of toast positions to calculate
 def watch_for_toast():
@@ -13,6 +13,9 @@ def watch_for_toast():
 
     result = []
 
+    inputImages = []
+    outputImages = []
+
     while True:
         ret, frame = cam.read()
 
@@ -21,21 +24,32 @@ def watch_for_toast():
         
         toast = find_toast(frame)
         if toast is not None and len(toast) > 2:
-            result.append(toast)
+            print("i see toast")
+        #     outputImages = [x[3] for x in result if x[2] >= time.time() - 0.5]
+        #     inputImages = [x[4] for x in result if x[2] >= time.time() - 0.5]
+            
+        #     result.append(toast)
 
-            results = [x for x in result if x[2] >= time.time() - 1]
+        #     result = [x for x in result if x[2] >= time.time() - 0.5]
         
-            if len(results) >= 3:
-                print("3 found")
-                break
+        #     if len(result) >= 3:
+        #         print("3 found")
+        #         break
         
         # Press 'q' to exit the loop
-        if cv2.waitKey(10) == ord('q'):
+        if cv2.waitKey(20) == ord('q'):
             break
+
+    for input in inputImages:
+        cv2.imwrite(f"Input{len(result)}.png", input)
+
+    for output in outputImages:
+        cv2.imwrite(f"Output{len(result)}.png", output)
 
     # Release the capture and writer objects
     cam.release()
     cv2.destroyAllWindows()
+    return result
     
 def test_camera():
     # Open the default camera

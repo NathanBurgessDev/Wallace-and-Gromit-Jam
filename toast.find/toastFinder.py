@@ -2,22 +2,24 @@ import numpy as np
 import cv2
 import time
 
-MINIMUM_AREA_FOR_TOAST = 140000 # may need to adjust this for differnet cameras
+MINIMUM_AREA_FOR_TOAST = 60000 # may need to adjust this for differnet cameras
+# MINIMUM_AREA_FOR_TOAST = 200000
 
 def find_toast(image: str):
 
     imgRGB = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     imgHSV = cv2.cvtColor(imgRGB, cv2.COLOR_BGR2HSV)
     h, s, v = cv2.split(imgHSV)
-    v = np.clip(v * 0.5, 0, 255).astype(np.uint8)  # Reduce brightness by 50%
+    v = np.clip(v * 0.50, 0, 255).astype(np.uint8)  # Reduce brightness by 50%
 
     # Merge back
     hsv_modified = cv2.merge([h, s, v])
+    # cv2.imshow('darkened', hsv_modified)
 
     lower = np.array([20, 0, 0])
     upper = np.array([100, 255, 255])
     imgRange = cv2.inRange(hsv_modified, lower, upper)
-    cv2.imshow("green part of image", imgRange)
+    # cv2.imshow("green part of image", imgRange)
 
     imgForeground = cv2.bitwise_not(imgRange)
     cv2.imshow("foreground", imgForeground)
@@ -30,7 +32,7 @@ def find_toast(image: str):
     imgErode = cv2.erode(imgForeground, kernel_noise, 1)
     imgDilate = cv2.dilate(imgErode , kernel_dilate, 1)
     imgErode = cv2.erode(imgDilate, kernel_erode, 1)
-    cv2.imshow("cleaned foreground", imgErode)
+    # cv2.imshow("cleaned foreground", imgErode)
 
     contours, _ = cv2.findContours(imgErode, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -62,9 +64,7 @@ def find_toast(image: str):
     # Show result
     cv2.imshow("Largest Region", mask)
 
-    # cv2.imwrite("OUTPUT.png", mask)
-
-    return cX, cY, time.time()
+    return cX, cY, time.time(), mask, image
 
 # def toastFinderBrownness(image):
 #     image = image - 15
